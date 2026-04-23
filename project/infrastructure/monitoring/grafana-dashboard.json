@@ -1,0 +1,43 @@
+{
+  "title": "Microservices Cluster Health",
+  "panels": [
+    {
+      "title": "Request Rate (RPS) per Service",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total[5m])) by (service)",
+          "legendFormat": "{{service}}"
+        }
+      ]
+    },
+    {
+      "title": "Error Rate (5xx) by Service",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(http_requests_total{status=~\"5..\"}[5m])) by (service) / sum(rate(http_requests_total[5m])) by (service)",
+          "legendFormat": "{{service}} error %"
+        }
+      ]
+    },
+    {
+      "title": "Memory Usage per Node",
+      "type": "gauge",
+      "targets": [
+        {
+          "expr": "node_memory_MemTotal_bytes - node_memory_MemFree_bytes"
+        }
+      ]
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "namespace",
+        "query": "label_values(namespace)",
+        "type": "query"
+      }
+    ]
+  }
+}

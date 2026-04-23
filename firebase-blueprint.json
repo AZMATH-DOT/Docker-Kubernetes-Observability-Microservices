@@ -1,0 +1,38 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A product in the shop",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "stock": { "type": "integer" }
+      },
+      "required": ["id", "name", "price"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer order",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "productIds": { "type": "array", "items": { "type": "string" } },
+        "total": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "shipped", "delivered"] }
+      }
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Product catalog"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Order history"
+    }
+  }
+}
